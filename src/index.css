@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  --color-maroon: #6e1f2a;
+  --color-maroon-dark: #46121a;
+  --color-gold: #c9a45c;
+  --color-gold-light: #e7d2a1;
+  --color-cream: #f8f4ed;
+  --color-ivory: #fffdf8;
+  --color-charcoal: #1d1b19;
+  --color-muted: #6e6962;
+  --color-border: #e8e1d6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ivory);
+  color: var(--color-charcoal);
+  font-family: "Inter", sans-serif;
+  overflow-x: hidden;
+}
+
+button,
+a {
+  font-family: inherit;
+}
+
+.font-display {
+  font-family: "Playfair Display", serif;
+}
+
+.font-tamil {
+  font-family: "Noto Serif Tamil", serif;
+}
+
+.font-tamil-body {
+  font-family: "Noto Sans Tamil", sans-serif;
+}
+
+::selection {
+  background: var(--color-maroon);
+  color: white;
+}
