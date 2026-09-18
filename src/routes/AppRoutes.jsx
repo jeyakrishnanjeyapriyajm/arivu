@@ -9,6 +9,7 @@ import ShirleyPage from "../pages/ShirleyPage";
 import ContactPage from "../pages/ContactPage";
 import PlaceholderPage from "../pages/PlaceholderPage";
 import EventsPage from "../pages/EventsPage";
+import NotFoundPage from "../pages/NotFoundPage";
 
 export default function AppRoutes() {
   return (
@@ -25,6 +26,7 @@ export default function AppRoutes() {
         <Route path="/events" element={<EventsPage />} />
 
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );
