@@ -1,4 +1,54 @@
 @import "tailwindcss";
+/* Import this file in main.jsx AFTER your Tailwind css:  import "./story.css"; */
+
+/* fonts and colours come from @theme in index.css */
+
+@keyframes story-float {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50%      { transform: translateY(-20px) rotate(3deg); }
+}
+.story-float { animation: story-float 7s ease-in-out infinite; }
+
+@keyframes story-sway {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(3deg); }
+}
+.story-sway { animation: story-sway 6s ease-in-out infinite; transform-origin: top left; }
+
+@keyframes story-glow {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 1; }
+}
+.story-glow { animation: story-glow 5s ease-in-out infinite; }
+
+@keyframes story-petal {
+  0%   { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 1; }
+  100% { transform: translate3d(var(--drift, 40px), 110vh, 0) rotate(540deg); opacity: 0; }
+}
+.story-petal { animation-name: story-petal; animation-timing-function: linear; animation-iteration-count: infinite; }
+
+@keyframes story-bar {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+.story-bar { animation: story-bar 0.8s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .story-float, .story-sway, .story-glow, .story-petal, .story-bar { animation: none; }
+}
+
+/* ---------- hide the navigation bar while the home intro plays ---------- */
+header,
+#site-header {
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+html[data-intro="playing"] header,
+html[data-intro="playing"] #site-header {
+  transform: translateY(-110%);
+  opacity: 0;
+  pointer-events: none;
+}
 
 /* =========================================================
    Arivu brand tokens — sampled from the Arivu Foundation logo
@@ -78,3 +128,621 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* ===========================
+   Tamil Logo Page Loader
+=========================== */
+
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  animation: loaderFadeIn 0.4s ease both;
+}
+
+.loader-content {
+  width: min(280px, 85vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.loader-logo {
+  width: 110px;
+  height: 110px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 12px;
+  animation: logoFloat 1.8s ease-in-out infinite;
+}
+
+.loader-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.loader-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+  height: 38px;
+  margin: 10px 0;
+}
+
+.loader-bar {
+  display: block;
+  width: 7px;
+  border-radius: 3px 3px 0 0;
+  transform-origin: bottom;
+  animation: barRise 0.8s ease-in-out infinite alternate;
+}
+
+.bar-1 {
+  height: 15px;
+  background: #e86b32;
+  animation-delay: 0s;
+}
+
+.bar-2 {
+  height: 25px;
+  background: #b51f32;
+  animation-delay: 0.12s;
+}
+
+.bar-3 {
+  height: 34px;
+  background: #d9a12e;
+  animation-delay: 0.24s;
+}
+
+.bar-4 {
+  height: 21px;
+  background: #e86b32;
+  animation-delay: 0.36s;
+}
+
+.bar-5 {
+  height: 30px;
+  background: #b51f32;
+  animation-delay: 0.48s;
+}
+
+.bar-6 {
+  height: 17px;
+  background: #d9a12e;
+  animation-delay: 0.6s;
+}
+
+.loader-message {
+  margin: 5px 0 18px;
+  color: #8f192d;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.loader-progress {
+  width: 150px;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #f1e5e7;
+}
+
+.loader-progress span {
+  display: block;
+  width: 40%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #e86b32, #b51f32);
+  animation: progressMove 1.2s ease-in-out infinite;
+}
+
+.loader-caption {
+  margin-top: 12px;
+  color: #777;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+
+@keyframes barRise {
+  from {
+    transform: scaleY(0.55);
+    opacity: 0.65;
+  }
+
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes logoFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes progressMove {
+  0% {
+    transform: translateX(-110%);
+  }
+
+  100% {
+    transform: translateX(360%);
+  }
+}
+
+@keyframes loaderFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader-logo,
+  .loader-bar,
+  .loader-progress span {
+    animation: none;
+  }
+}
+
+
+/* ==========================================
+   ARIVU — SCROLL STORY INTRO
+========================================== */
+
+.arivu-story {
+  position: relative;
+  height: 320vh;
+  background: var(--color-paper);
+}
+
+.arivu-story-stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: 560px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(18px, 3vw, 44px);
+  background:
+    radial-gradient(ellipse at 80% 20%, rgb(239 155 45 / 13%), transparent 35%),
+    radial-gradient(ellipse at 10% 85%, rgb(163 22 46 / 8%), transparent 38%),
+    var(--color-paper);
+}
+
+.arivu-story-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: radial-gradient(
+    rgb(163 22 46 / 12%) 0.7px,
+    transparent 0.7px
+  );
+  background-size: 13px 13px;
+}
+
+.arivu-story-top,
+.arivu-story-bottom {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.arivu-scene-number {
+  color: var(--color-crimson);
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3vw, 44px);
+  font-weight: 700;
+}
+
+.arivu-story-progress {
+  width: min(220px, 35vw);
+  margin-right: auto;
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.arivu-progress-track {
+  height: 3px;
+  margin-top: 7px;
+  overflow: hidden;
+  background: var(--color-line);
+}
+
+.arivu-progress-fill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--color-crimson),
+    var(--color-saffron),
+    var(--color-leaf)
+  );
+  transition: width 120ms linear;
+}
+
+.arivu-story-counter {
+  color: var(--color-ink);
+  font-size: 12px;
+}
+
+.arivu-story-content {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: clamp(24px, 6vw, 90px);
+  width: min(1250px, 100%);
+  margin: 0 auto;
+  animation: arivuSceneEnter 850ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.arivu-story-art {
+  position: relative;
+  min-height: 300px;
+  height: min(62vh, 570px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 48% 48% 12px 12px;
+  background: linear-gradient(145deg, #fff4df, #f4dfc0);
+}
+
+.arivu-story-art::before,
+.arivu-story-art::after {
+  content: "";
+  position: absolute;
+  border: 1px solid rgb(163 22 46 / 18%);
+  border-radius: 50%;
+}
+
+.arivu-story-art::before {
+  width: 78%;
+  aspect-ratio: 1;
+}
+
+.arivu-story-art::after {
+  width: 92%;
+  aspect-ratio: 1;
+  border-color: rgb(239 155 45 / 25%);
+}
+
+.tamil-watermark {
+  color: var(--color-crimson);
+  font-family: var(--font-tamil);
+  font-size: clamp(150px, 24vw, 310px);
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 12px 35px rgb(163 22 46 / 12%);
+  animation: arivuFloat 5s ease-in-out infinite;
+}
+
+.tamil-letter-cloud {
+  position: absolute;
+  bottom: 17%;
+  left: 8%;
+  right: 8%;
+  color: var(--color-vermilion);
+  font-family: var(--font-tamil);
+  font-size: clamp(14px, 2vw, 23px);
+  line-height: 2;
+  text-align: center;
+  transform: rotate(-8deg);
+}
+
+.art-caption {
+  position: absolute;
+  bottom: 8%;
+  color: var(--color-muted);
+  font-family: var(--font-tamil);
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.art-foundation {
+  background: linear-gradient(150deg, #fdf7eb, #f2e0bf);
+}
+
+.arivu-logo-symbol {
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  height: 46px;
+}
+
+.arivu-logo-symbol span {
+  width: 9px;
+  border-radius: 2px 2px 0 0;
+  background: var(--color-crimson);
+}
+
+.arivu-logo-symbol span:nth-child(1),
+.arivu-logo-symbol span:nth-child(4) {
+  background: var(--color-saffron);
+}
+
+.arivu-logo-symbol span:nth-child(2) {
+  background: var(--color-vermilion);
+}
+
+.arivu-logo-symbol span:nth-child(5) {
+  background: var(--color-ink);
+}
+
+.arivu-logo-tamil {
+  margin-top: 8px;
+  color: var(--color-ink);
+  font-family: var(--font-tamil);
+  font-size: 40px;
+  font-weight: 800;
+}
+
+.arivu-logo-name {
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: clamp(25px, 4vw, 44px);
+  font-weight: 700;
+  text-align: center;
+}
+
+.arivu-logo-subtitle {
+  margin-top: 4px;
+  color: var(--color-leaf-deep);
+  font-family: var(--font-display);
+  font-size: clamp(16px, 2vw, 24px);
+}
+
+.arivu-story-brand-rule {
+  width: 140px;
+  height: 5px;
+  margin-top: 22px;
+  border-radius: 20px;
+}
+
+.art-learning {
+  background: linear-gradient(145deg, #fff3df, #f3d9b7);
+}
+
+.learning-book {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: clamp(130px, 20vw, 230px);
+  aspect-ratio: 0.78;
+  border-radius: 8px 20px 20px 8px;
+  background: var(--color-crimson);
+  color: #fff8e9;
+  font-family: var(--font-tamil);
+  font-size: clamp(70px, 11vw, 130px);
+  box-shadow: 12px 20px 35px rgb(21 26 69 / 20%);
+  transform: rotate(-7deg);
+}
+
+.learning-orbit {
+  position: absolute;
+  width: 85%;
+  aspect-ratio: 1;
+  border: 1px solid rgb(239 155 45 / 65%);
+  border-radius: 50%;
+  animation: arivuOrbit 18s linear infinite;
+}
+
+.orbit-two {
+  width: 65%;
+  border-color: rgb(163 22 46 / 25%);
+  animation-direction: reverse;
+}
+
+.learning-decor {
+  position: absolute;
+  bottom: 12%;
+  color: var(--color-leaf-deep);
+  font-family: var(--font-tamil);
+  font-size: 17px;
+}
+
+.arivu-story-copy {
+  max-width: 560px;
+}
+
+.arivu-story-eyebrow {
+  margin: 0 0 15px;
+  color: var(--color-leaf-deep);
+  font-family: var(--font-tamil);
+  font-size: clamp(13px, 1.5vw, 17px);
+  letter-spacing: 1px;
+}
+
+.arivu-story-copy h1 {
+  margin: 0;
+  color: var(--color-crimson);
+  font-family: var(--font-tamil);
+  font-size: clamp(34px, 5.5vw, 72px);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.arivu-story-copy h2 {
+  margin: 14px 0;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 52px);
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+}
+
+.arivu-story-description {
+  max-width: 470px;
+  color: var(--color-muted);
+  font-size: clamp(14px, 1.5vw, 18px);
+  line-height: 1.9;
+}
+
+.arivu-story-accent {
+  display: block;
+  width: 44px;
+  height: 3px;
+  margin-top: 26px;
+  background: var(--color-saffron);
+}
+
+.arivu-story-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.arivu-story-badges span {
+  padding: 9px 12px;
+  border: 1px solid var(--color-line);
+  border-radius: 30px;
+  color: var(--color-ink);
+  font-size: 12px;
+}
+
+.arivu-story-bottom {
+  color: var(--color-muted);
+  font-family: var(--font-tamil);
+  font-size: 12px;
+}
+
+@keyframes arivuSceneEnter {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(.985);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes arivuFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes arivuOrbit {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 700px) {
+  .arivu-story {
+    height: 300vh;
+  }
+
+  .arivu-story-stage {
+    min-height: 540px;
+    padding: 16px;
+  }
+
+  .arivu-story-content {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(170px, 36%) 1fr;
+    gap: 16px;
+    padding: 14px 0;
+  }
+
+  .arivu-story-art {
+    min-height: 170px;
+    height: 100%;
+    border-radius: 45% 45% 12px 12px;
+  }
+
+  .tamil-watermark {
+    font-size: 135px;
+  }
+
+  .tamil-letter-cloud {
+    bottom: 8%;
+    font-size: 12px;
+  }
+
+  .art-caption {
+    display: none;
+  }
+
+  .arivu-logo-tamil {
+    font-size: 28px;
+  }
+
+  .arivu-logo-name {
+    font-size: 25px;
+  }
+
+  .arivu-story-copy h1 {
+    font-size: clamp(30px, 9vw, 48px);
+  }
+
+  .arivu-story-copy h2 {
+    margin: 8px 0;
+    font-size: clamp(25px, 7vw, 36px);
+  }
+
+  .arivu-story-description {
+    margin: 8px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .arivu-story-eyebrow {
+    margin-bottom: 7px;
+    font-size: 11px;
+  }
+
+  .arivu-story-accent {
+    margin-top: 12px;
+  }
+
+  .arivu-story-badges {
+    margin-top: 12px;
+    gap: 5px;
+  }
+
+  .arivu-story-badges span {
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+
+  .arivu-story-bottom {
+    gap: 8px;
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arivu-story *,
+  .arivu-story *::before,
+  .arivu-story *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
