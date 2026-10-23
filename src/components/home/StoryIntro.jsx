@@ -20,22 +20,26 @@ const IMAGES = {
 
 /* ---------- timeline: 0 = section top, 1 = section end ---------- */
 const T = {
-  tamilIn: [0.05, 0.15],
-  tamilOut: [0.27, 0.35],
-  tagline1In: [0.12, 0.2],
-  logoIn: [0.35, 0.45],
-  logoOut: [0.58, 0.66],
-  tagline2In: [0.43, 0.51],
-  bg3In: [0.58, 0.72],
-  baradhiIn: [0.62, 0.74],
-  quoteIn: [0.7, 0.8],
-  buttonIn: [0.8, 0.88],
+  tamilOut: [0.03, 0.15], // scene 1 leaves when you start scrolling
+  logoIn: [0.15, 0.28],
+  tagline2In: [0.24, 0.34],
+  logoOut: [0.46, 0.56],
+  bg3In: [0.5, 0.66],
+  baradhiIn: [0.56, 0.7],
+  quoteIn: [0.66, 0.78],
+  buttonIn: [0.78, 0.88],
 };
 
 /* ---------- helpers ---------- */
 const clamp = (v, min = 0, max = 1) => Math.min(max, Math.max(min, v));
 const range = (p, [start, end]) => clamp((p - start) / (end - start));
 const lerp = (a, b, t) => a + (b - a) * t;
+
+/** time-based entrance (used only for scene 1) */
+const autoIn = (on) =>
+  `transition-all duration-1000 ease-out ${
+    on ? "translate-y-0 opacity-100 blur-0" : "translate-y-8 opacity-0 blur-sm"
+  }`;
 
 /** fades in + slides up as value goes 0 → 1 */
 const rise = (v, dist = 40) => ({
@@ -187,15 +191,13 @@ export default function StoryIntro() {
   // one-time "page loaded" animation
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    const id = requestAnimationFrame(() => setLoaded(true));
-    return () => cancelAnimationFrame(id);
+    const id = setTimeout(() => setLoaded(true), 60);
+    return () => clearTimeout(id);
   }, []);
 
   /* ---- values for each element ---- */
-  const tamilIn = range(p, T.tamilIn);
   const tamilOut = range(p, T.tamilOut);
-  const tamil = Math.min(tamilIn, 1 - tamilOut);
-  const tagline1 = Math.min(range(p, T.tagline1In), 1 - tamilOut);
+  const tamil = 1 - tamilOut;
 
   const logoIn = range(p, T.logoIn);
   const logoOut = range(p, T.logoOut);
@@ -207,7 +209,7 @@ export default function StoryIntro() {
   const quote = range(p, T.quoteIn);
   const button = range(p, T.buttonIn);
 
-  const letters = 1 - range(p, [0.28, 0.38]);
+  const letters = 1 - range(p, [0.03, 0.16]);
 
   // hide the site navigation bar while the intro is playing
   const introPlaying = p < 0.98;
@@ -223,14 +225,14 @@ export default function StoryIntro() {
     <section
       ref={sectionRef}
       id="arivu-story"
-      className="relative h-[500vh] bg-paper"
+      className="relative h-[400vh] bg-paper"
     >
       <h1 className="sr-only">
         Arivu Foundation – Arivu Tamil School, weekend Tamil classes in
         Coventry, Birmingham and Shirley
       </h1>
 
-      {/* sticky stage: stays on screen while the 500vh section scrolls */}
+      {/* sticky stage: stays on screen while the 400vh section scrolls */}
       <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
         {/* LAYER 0 — soft fallback colour (always there) */}
         <div className="absolute inset-0 bg-gradient-to-b from-paper via-sand to-sand" />
@@ -310,22 +312,31 @@ export default function StoryIntro() {
 
         {/* ================= TEXT ================= */}
 
-        {/* Scene 1 — தமிழ் (dark blue heading) */}
+        {/* Scene 1 — தமிழ்: plays automatically on load, leaves on scroll */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-6 text-center">
           <div
             style={{
               opacity: tamil,
-              transform: `translate3d(0, ${(1 - tamilIn) * 50}px, 0) scale(${1 + tamilOut * 0.15})`,
+              transform: `scale(${1 + tamilOut * 0.15})`,
               filter: `blur(${tamilOut * 8}px)`,
             }}
           >
-            <p className="font-tamil text-[clamp(4.5rem,15vw,10rem)] font-bold leading-none text-crimson drop-shadow-[0_4px_12px_rgba(163,22,46,0.25)]">
+            <p
+              className={`font-tamil text-[clamp(4.5rem,15vw,10rem)] font-bold leading-none text-crimson drop-shadow-[0_4px_12px_rgba(163,22,46,0.25)] ${autoIn(loaded)}`}
+              style={{ transitionDelay: "400ms" }}
+            >
               தமிழ்
             </p>
-            <p className="font-tamil mt-4 text-base text-muted md:text-lg">
+            <p
+              className={`font-tamil mt-4 text-base text-muted md:text-lg ${autoIn(loaded)}`}
+              style={{ transitionDelay: "1100ms" }}
+            >
               தமிழ் மொழி · பண்பாடு · பாரம்பரியம்
             </p>
-            <div className="mx-auto mt-6 max-w-sm" style={rise(tagline1, 24)}>
+            <div
+              className={`mx-auto mt-6 max-w-sm ${autoIn(loaded)}`}
+              style={{ transitionDelay: "1700ms" }}
+            >
               <p className="font-display text-2xl text-ink md:text-3xl">
                 A language that carries generations.
               </p>
@@ -416,9 +427,16 @@ export default function StoryIntro() {
         {/* scroll hint */}
         <div
           className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-6 font-sans text-sm text-muted"
-          style={{ opacity: 1 - range(p, [0.6, 0.7]) }}
+          style={{ opacity: 1 - range(p, [0.03, 0.1]) }}
         >
-          <span className="animate-bounce">Scroll to discover ↓</span>
+          <span
+            className={`transition-opacity duration-700 ${loaded ? "opacity-100" : "opacity-0"}`}
+            style={{ transitionDelay: "2400ms" }}
+          >
+            <span className="inline-block animate-bounce">
+              Scroll to discover ↓
+            </span>
+          </span>
         </div>
       </div>
     </section>
