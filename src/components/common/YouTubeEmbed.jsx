@@ -1,32 +1,23 @@
 import { useState } from "react";
 import { Play } from "lucide-react";
 
+import { youtubeThumb } from "../../data/site";
+
+// Lightweight embed: shows the thumbnail until clicked, then loads the player.
 export default function YouTubeEmbed({
   videoId,
   title = "Arivu Foundation video",
-  start = 0,
+  className = "",
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
 
-  if (!videoId) {
-    return (
-      <div className="flex aspect-video items-center justify-center bg-slate-900 px-6 text-center text-sm font-semibold text-white">
-        Video is currently unavailable.
-      </div>
-    );
-  }
-
-  const thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
-
-  const videoUrl =
-    `https://www.youtube.com/embed/${videoId}` +
-    `?autoplay=1&rel=0&start=${start}`;
-
   return (
-    <div className="relative aspect-video overflow-hidden bg-slate-900">
+    <div
+      className={`relative aspect-video overflow-hidden bg-ink-deep ${className}`}
+    >
       {isPlaying ? (
         <iframe
-          src={videoUrl}
+          src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`}
           title={title}
           className="absolute inset-0 h-full w-full border-0"
           allow="autoplay; encrypted-media; picture-in-picture"
@@ -36,24 +27,20 @@ export default function YouTubeEmbed({
         <button
           type="button"
           onClick={() => setIsPlaying(true)}
-          aria-label={`Play ${title}`}
+          aria-label={`Play video: ${title}`}
           className="group absolute inset-0 h-full w-full overflow-hidden"
         >
           <img
-            src={thumbnailUrl}
+            src={youtubeThumb(videoId)}
             alt=""
             loading="lazy"
-            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-            onError={(event) => {
-              event.currentTarget.onerror = null;
-              event.currentTarget.src = "/images/image-placeholder.svg";
-            }}
+            className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
           />
 
-          <span className="absolute inset-0 bg-slate-950/40 transition group-hover:bg-slate-950/55" />
+          <span className="absolute inset-0 bg-gradient-to-t from-ink-deep/70 via-ink-deep/10 to-transparent transition group-hover:from-ink-deep/80" />
 
-          <span className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-red-700 text-white shadow-2xl transition duration-300 group-hover:scale-110 group-hover:bg-red-800">
-            <Play size={27} fill="currentColor" className="ml-1" />
+          <span className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-crimson text-white shadow-2xl ring-8 ring-white/15 transition duration-300 group-hover:scale-110">
+            <Play size={24} fill="currentColor" className="ml-1" />
           </span>
         </button>
       )}

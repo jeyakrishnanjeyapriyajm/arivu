@@ -1,280 +1,204 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
+import { FaFacebookF, FaWhatsapp } from "react-icons/fa";
 
-import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
-
-const locations = [
-  {
-    name: "Coventry",
-    address: "Lyng Hall School, Blackberry Lane",
-    path: "/coventry",
-  },
-  {
-    name: "Birmingham",
-    address: "West Bromwich Collegiate Academy, Kelvin Way",
-    path: "/birmingham",
-  },
-  {
-    name: "Shirley",
-    address: "Light Hall School, Hathaway Road",
-    path: "/shirley",
-  },
-];
+import Logo from "../brand/Logo";
+import { navigationLinks } from "../../data/navigation";
+import { locations } from "../../data/locations";
+import { site, whatsappLink } from "../../data/site";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#1d1b19] text-white">
-      {/* Top CTA strip */}
-      <div className="border-b border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-10 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-12">
-          <div>
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#c9a45c]">
-              Arivu Foundation
-            </p>
+    <footer className="relative bg-ink-deep text-white">
+      <div className="brand-rule h-1.5 w-full" />
 
-            <h3 className="font-display text-2xl text-white sm:text-3xl">
-              Keep Tamil alive for the next generation.
-            </h3>
+      {/* CTA strip */}
+      <div className="border-b border-white/10">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-12 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-12">
+          <div>
+            <p className="font-tamil text-sm font-semibold text-leaf">
+              {site.tamilName}
+            </p>
+            <h2 className="mt-2 font-display text-3xl font-semibold sm:text-4xl">
+              Give your child the gift of Tamil.
+            </h2>
           </div>
 
-          <Link
-            to="/contact"
-            className="group inline-flex w-fit items-center gap-3 rounded-full bg-[#c9a45c] px-6 py-3.5 text-sm font-semibold text-[#46121a] transition hover:bg-[#e7d2a1]"
-          >
-            Get in touch
-            <ArrowUpRight
-              size={17}
-              className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-            />
-          </Link>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              to="/contact#enquiry"
+              className="group inline-flex items-center gap-2 rounded-full bg-saffron px-6 py-3.5 text-sm font-semibold text-ink-deep transition hover:bg-[#f5b04f]"
+            >
+              Enquire about enrolment
+              <ArrowUpRight
+                size={17}
+                className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </Link>
+            <a
+              href={whatsappLink()}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-sm font-semibold transition hover:border-white hover:bg-white/10"
+            >
+              <FaWhatsapp size={17} />
+              WhatsApp
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* Main footer */}
-      <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8 lg:px-12">
-        <div className="grid gap-14 lg:grid-cols-[1.4fr_0.8fr_1.2fr]">
+      <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-12">
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.3fr_0.7fr_1.4fr_1fr]">
           {/* Brand */}
           <div>
-            <Link to="/" className="inline-flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#c9a45c]/60 text-xl font-semibold text-[#e7d2a1]">
-                அ
-              </div>
-
-              <div>
-                <p className="font-display text-xl font-semibold">
-                  Arivu Foundation
-                </p>
-
-                <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.25em] text-[#c9a45c]">
-                  Tamil Language School
-                </p>
-              </div>
+            <Link
+              to="/"
+              aria-label="Arivu Foundation home"
+              className="inline-block"
+            >
+              <Logo tone="light" />
             </Link>
 
-            <p className="mt-7 max-w-md text-sm leading-7 text-white/55">
-              Supporting Tamil language education, cultural learning and
-              community connection across Coventry, Birmingham and Shirley.
+            <p className="mt-6 max-w-sm text-sm leading-7 text-white/60">
+              Tamil language education, culture and community for families in
+              Coventry, Birmingham and Shirley. {site.promise}
             </p>
 
-            <p className="mt-6 font-tamil text-lg text-[#e7d2a1]">
-              தமிழ் மொழி • பண்பாடு • பாரம்பரியம்
-            </p>
-
-            {/* Social icons */}
-            <div className="mt-8 flex items-center gap-3">
+            <div className="mt-7 flex gap-3">
               <a
-                href="#"
-                aria-label="Facebook"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/60 transition hover:border-[#c9a45c] hover:text-[#c9a45c]"
+                href={site.social.facebook}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Arivu Foundation on Facebook"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/70 transition hover:border-saffron hover:text-saffron"
               >
-                <FaFacebookF size={16} />
+                <FaFacebookF size={15} />
               </a>
-
               <a
-                href="#"
-                aria-label="Instagram"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/60 transition hover:border-[#c9a45c] hover:text-[#c9a45c]"
+                href={whatsappLink()}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Arivu Foundation on WhatsApp"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/70 transition hover:border-saffron hover:text-saffron"
               >
-                <FaInstagram size={17} />
-              </a>
-
-              <a
-                href="#"
-                aria-label="YouTube"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/60 transition hover:border-[#c9a45c] hover:text-[#c9a45c]"
-              >
-                <FaYoutube size={17} />
+                <FaWhatsapp size={17} />
               </a>
             </div>
           </div>
 
-          {/* Navigation */}
+          {/* Explore */}
           <div>
-            <p className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-[#c9a45c]">
+            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-saffron">
               Explore
             </p>
-
-            <nav className="flex flex-col gap-4">
-              <Link
-                to="/"
-                className="text-sm text-white/60 transition hover:text-white"
-              >
-                Home
-              </Link>
-
-              <Link
-                to="/coventry"
-                className="text-sm text-white/60 transition hover:text-white"
-              >
-                Coventry
-              </Link>
-
-              <Link
-                to="/birmingham"
-                className="text-sm text-white/60 transition hover:text-white"
-              >
-                Birmingham
-              </Link>
-
-              <Link
-                to="/shirley"
-                className="text-sm text-white/60 transition hover:text-white"
-              >
-                Shirley
-              </Link>
-
-              <Link
-                to="/events"
-                className="text-sm text-white/60 transition hover:text-white"
-              >
-                Events
-              </Link>
-
-              <Link
-                to="/contact"
-                className="text-sm text-white/60 transition hover:text-white"
-              >
-                Contact
-              </Link>
+            <nav aria-label="Footer" className="flex flex-col gap-3">
+              {navigationLinks.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className="text-sm text-white/65 transition hover:text-white"
+                >
+                  {item.label}
+                </Link>
+              ))}
             </nav>
+          </div>
+
+          {/* Schools */}
+          <div>
+            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-saffron">
+              Our schools
+            </p>
+            <div className="space-y-4">
+              {locations.map((location) => (
+                <Link
+                  key={location.id}
+                  to={location.path}
+                  className="group block rounded-xl border border-white/10 p-4 transition hover:border-white/25 hover:bg-white/5"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-display text-lg font-semibold">
+                      {location.name}
+                    </span>
+                    <span className="text-xs font-medium text-leaf">
+                      {location.day} · {location.hours}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs leading-5 text-white/50">
+                    {location.venue}
+                  </p>
+                </Link>
+              ))}
+            </div>
           </div>
 
           {/* Contact */}
           <div>
-            <p className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-[#c9a45c]">
+            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-saffron">
               Contact
             </p>
-
-            <div className="space-y-5">
+            <div className="space-y-5 text-sm">
               <div className="flex gap-3">
-                <MapPin size={18} className="mt-1 shrink-0 text-[#c9a45c]" />
-
-                <div className="text-sm leading-6 text-white/60">
-                  <p className="text-white/80">Head Office UK</p>
-                  <p>243 Cross Road</p>
-                  <p>Coventry, CV6 5GP</p>
-                  <p>United Kingdom</p>
+                <MapPin size={17} className="mt-0.5 shrink-0 text-saffron" />
+                <div className="leading-6 text-white/65">
+                  <p className="text-white/90">{site.headOffice.label}</p>
+                  {site.headOffice.lines.map((line) => (
+                    <p key={line}>{line}</p>
+                  ))}
                 </div>
               </div>
 
               <a
-                href="tel:+447961277728"
-                className="flex items-center gap-3 text-sm text-white/60 transition hover:text-white"
+                href={site.phoneHref}
+                className="flex items-center gap-3 text-white/65 transition hover:text-white"
               >
-                <Phone size={17} className="text-[#c9a45c]" />
-                07961 277728
+                <Phone size={16} className="text-saffron" />
+                {site.phone}
               </a>
 
               <a
-                href="mailto:arivufoundation@outlook.com"
-                className="flex items-center gap-3 text-sm text-white/60 transition hover:text-white"
+                href={`mailto:${site.email}`}
+                className="flex items-center gap-3 break-all text-white/65 transition hover:text-white"
               >
-                <Mail size={17} className="text-[#c9a45c]" />
-                arivufoundation@outlook.com
+                <Mail size={16} className="shrink-0 text-saffron" />
+                {site.email}
               </a>
             </div>
           </div>
         </div>
 
-        {/* Locations */}
-        <div className="mt-16 border-t border-white/10 pt-10">
-          <div className="mb-7 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#c9a45c]">
-                Our Schools
-              </p>
-
-              <p className="mt-2 text-sm text-white/40">
-                Find your nearest Arivu Tamil School.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-3">
-            {locations.map((location, index) => (
-              <Link
-                key={location.name}
-                to={location.path}
-                className="group rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition duration-300 hover:border-[#c9a45c]/40 hover:bg-white/[0.06]"
-              >
-                <div className="flex items-start justify-between">
-                  <span className="text-xs font-semibold text-[#c9a45c]">
-                    0{index + 1}
-                  </span>
-
-                  <ArrowUpRight
-                    size={17}
-                    className="text-white/30 transition group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-[#c9a45c]"
-                  />
-                </div>
-
-                <h4 className="mt-5 font-display text-xl">{location.name}</h4>
-
-                <p className="mt-2 text-xs leading-5 text-white/40">
-                  {location.address}
-                </p>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* Sister school */}
-        <div className="mt-10 flex flex-col gap-4 rounded-2xl border border-[#c9a45c]/20 bg-[#c9a45c]/5 p-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 flex flex-col gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-[#c9a45c]">
-              Sister School
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45">
+              Sister school
             </p>
-
-            <p className="mt-2 font-display text-lg text-white">
-              Chitrakalaimanram
+            <p className="mt-1 font-display text-lg font-semibold">
+              Chitrakalaimanram — Centre for Performing Arts
             </p>
           </div>
-
           <a
             href="https://www.chitrakalaimanram.co.uk"
             target="_blank"
             rel="noreferrer"
-            className="group inline-flex items-center gap-2 text-sm font-semibold text-[#e7d2a1]"
+            className="group inline-flex items-center gap-2 text-sm font-semibold text-leaf"
           >
-            Explore arts & music
+            Bharatanatyam, music & more
             <ArrowUpRight
               size={16}
-              className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
+              className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
             />
           </a>
         </div>
       </div>
 
-      {/* Bottom bar */}
       <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-6 text-xs text-white/35 sm:px-8 md:flex-row md:items-center md:justify-between lg:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-6 text-xs text-white/45 sm:px-8 md:flex-row md:items-center md:justify-between lg:px-12">
           <p>
             © {new Date().getFullYear()} Arivu Foundation. All rights reserved.
+            Arivu Foundation® is a registered trademark.
           </p>
-
-          <p className="font-tamil text-sm">அறிவே அழகு</p>
-
-          <p>Tamil Language • Culture • Community</p>
+          <p className="font-tamil text-sm text-white/60">அறிவே அழகு</p>
         </div>
       </div>
     </footer>
